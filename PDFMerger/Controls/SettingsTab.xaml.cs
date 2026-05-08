@@ -39,7 +39,7 @@ public partial class SettingsTab : UserControl
 
     private void SaveSettings()
     {
-        if (_loading) return;
+        if (!IsLoaded || _loading) return;
 
         var s = SettingsService.Current;
         s.Theme = DarkThemeRadio.IsChecked == true ? "Dark" : "Light";
@@ -53,7 +53,7 @@ public partial class SettingsTab : UserControl
 
     private void ThemeRadio_Checked(object sender, RoutedEventArgs e)
     {
-        if (_loading) return;
+        if (!IsLoaded || _loading) return;
 
         var newTheme = DarkThemeRadio.IsChecked == true ? "Dark" : "Light";
         var current = SettingsService.Current;
