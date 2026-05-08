@@ -2,6 +2,7 @@ using System.IO;
 using iText.Kernel.Pdf;
 using iText.Kernel.Utils;
 using iText.Kernel.Geom;
+using Path = System.IO.Path;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;

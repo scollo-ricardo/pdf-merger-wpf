@@ -10,6 +10,7 @@
     <AssemblyName>PDF Merger</AssemblyName>
     <Version>1.0.0</Version>
     <Platforms>AnyCPU</Platforms>
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="itext7" Version="8.0.5" />
