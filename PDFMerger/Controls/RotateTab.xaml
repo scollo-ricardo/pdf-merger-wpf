@@ -1,0 +1,120 @@
+<UserControl x:Class="PDFMerger.Controls.RotateTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.modernwpf.com/2019">
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,8">
+            <TextBlock Text="Rotate Pages"
+                       FontSize="20" FontWeight="Bold" />
+            <TextBlock Text="Load a PDF, select pages, and apply rotation. The preview shows the rotated result."
+                       Foreground="Gray" FontSize="12" Margin="0,2,0,6" />
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Browse PDF…" Click="BrowsePdf_Click" Padding="10,6" Margin="0,0,8,0" />
+                <TextBlock x:Name="FileNameLabel"
+                           VerticalAlignment="Center"
+                           Text="No file loaded"
+                           Foreground="Gray" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Body: page list + preview -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="260" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Page list + rotation controls -->
+            <Grid Grid.Column="0" Margin="0,0,8,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="Select pages to rotate:"
+                           Foreground="Gray" FontSize="11" Margin="0,0,0,4" />
+
+                <Border Grid.Row="1"
+                        BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                        BorderThickness="1" CornerRadius="4">
+                    <ListBox x:Name="PageListBox"
+                             SelectionMode="Extended"
+                             BorderThickness="0"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             SelectionChanged="PageListBox_SelectionChanged" />
+                </Border>
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,6,0,6">
+                    <Button Content="Select All" Click="SelectAll_Click" Padding="10,6" Margin="0,0,6,0" />
+                    <Button Content="Clear" Click="ClearSelection_Click" Padding="10,6" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="3" Orientation="Horizontal">
+                    <Button Content="← 90° Left"
+                            Click="Rotate90Left_Click"
+                            Padding="10,6" Margin="0,0,6,0" />
+                    <Button Content="180°"
+                            Click="Rotate180_Click"
+                            Padding="10,6" Margin="0,0,6,0" />
+                    <Button Content="→ 90° Right"
+                            Click="Rotate90Right_Click"
+                            Padding="10,6" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Preview panel -->
+            <Border Grid.Column="1"
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                    BorderThickness="1" CornerRadius="4" Padding="8">
+                <StackPanel>
+                    <TextBlock Text="Preview" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,6" />
+                    <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                            BorderThickness="1"
+                            Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                            MinHeight="300"
+                            ClipToBounds="True">
+                        <Image x:Name="PreviewImage"
+                               MaxWidth="240" MaxHeight="380"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="4"
+                               RenderTransformOrigin="0.5,0.5">
+                            <Image.RenderTransform>
+                                <RotateTransform x:Name="PreviewRotateTransform" Angle="0" />
+                            </Image.RenderTransform>
+                        </Image>
+                    </Border>
+                    <TextBlock x:Name="PreviewInfoText"
+                               Text="Click a page to preview"
+                               FontSize="11"
+                               Foreground="Gray"
+                               HorizontalAlignment="Center"
+                               Margin="0,6,0,0"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Save button -->
+        <Button Grid.Row="2"
+                Content="Save Rotated PDF"
+                Style="{StaticResource AccentButtonStyle}"
+                HorizontalAlignment="Left"
+                Padding="20,8"
+                FontSize="14"
+                Margin="0,10,0,0"
+                Click="SaveRotated_Click" />
+    </Grid>
+</UserControl>

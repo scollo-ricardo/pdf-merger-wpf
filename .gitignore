@@ -1,0 +1,39 @@
+# Build outputs
+bin/
+obj/
+out/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.nuget.props
+project.nuget.targets
+
+# macOS
+.DS_Store
+
+# Windows thumbnails
+Thumbs.db
+Desktop.ini
+
+# Rider
+.idea/
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Logs
+*.log
+
+# Publish output
+publish/

@@ -1,0 +1,52 @@
+<Window x:Class="PDFMerger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:controls="clr-namespace:PDFMerger.Controls"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        mc:Ignorable="d"
+        Title="PDF &amp; Image Merger"
+        Width="1020" Height="720"
+        MinWidth="780" MinHeight="560">
+
+    <DockPanel>
+        <!-- Copyright footer -->
+        <TextBlock DockPanel.Dock="Bottom"
+                   Text="© 2026 Ricardo Scollo — PDF &amp; Image Merger v1.0.0  |  All rights reserved."
+                   FontSize="10"
+                   Foreground="Gray"
+                   HorizontalAlignment="Center"
+                   Margin="0,2,0,3" />
+
+        <!-- Status bar -->
+        <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" Height="24">
+            <StatusBarItem>
+                <TextBlock x:Name="StatusText" Text="Ready" />
+            </StatusBarItem>
+        </StatusBar>
+
+        <!-- Main tab control -->
+        <TabControl x:Name="MainTabControl" Margin="8,8,8,4">
+            <TabItem Header="Merge">
+                <controls:MergeTab x:Name="MergeTabControl" />
+            </TabItem>
+            <TabItem Header="Split">
+                <controls:SplitTab x:Name="SplitTabControl" />
+            </TabItem>
+            <TabItem Header="Extract">
+                <controls:ExtractTab x:Name="ExtractTabControl" />
+            </TabItem>
+            <TabItem Header="Rotate">
+                <controls:RotateTab x:Name="RotateTabControl" />
+            </TabItem>
+            <TabItem Header="Compress">
+                <controls:CompressTab x:Name="CompressTabControl" />
+            </TabItem>
+            <TabItem Header="Settings">
+                <controls:SettingsTab x:Name="SettingsTabControl" />
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

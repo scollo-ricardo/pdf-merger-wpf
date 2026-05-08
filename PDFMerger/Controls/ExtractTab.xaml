@@ -1,0 +1,120 @@
+<UserControl x:Class="PDFMerger.Controls.ExtractTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.modernwpf.com/2019">
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,8">
+            <TextBlock Text="Extract Pages as Images"
+                       FontSize="20" FontWeight="Bold" />
+            <TextBlock Text="Load a PDF, select pages, and export them as PNG or JPG images."
+                       Foreground="Gray" FontSize="12" Margin="0,2,0,6" />
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Browse PDF…" Click="BrowsePdf_Click" Padding="10,6" Margin="0,0,8,0" />
+                <TextBlock x:Name="FileNameLabel"
+                           VerticalAlignment="Center"
+                           Text="No file loaded"
+                           Foreground="Gray" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Options row -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8" VerticalAlignment="Center">
+            <TextBlock Text="Format:" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <RadioButton x:Name="PngRadio"
+                         Content="PNG" IsChecked="True"
+                         Margin="0,0,12,0" VerticalAlignment="Center" />
+            <RadioButton x:Name="JpgRadio"
+                         Content="JPG"
+                         Margin="0,0,20,0" VerticalAlignment="Center" />
+            <TextBlock Text="DPI:" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <TextBox x:Name="DpiBox"
+                     Text="150"
+                     Width="60"
+                     VerticalAlignment="Center"
+                     TextAlignment="Center"
+                     PreviewTextInput="DpiBox_PreviewTextInput" />
+        </StackPanel>
+
+        <!-- Body: page list + preview -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="260" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Page list -->
+            <Grid Grid.Column="0" Margin="0,0,8,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="Select pages to extract (leave empty to extract all):"
+                           Foreground="Gray" FontSize="11" Margin="0,0,0,4" />
+
+                <Border Grid.Row="1"
+                        BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                        BorderThickness="1" CornerRadius="4">
+                    <ListBox x:Name="PageListBox"
+                             SelectionMode="Extended"
+                             BorderThickness="0"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             SelectionChanged="PageListBox_SelectionChanged" />
+                </Border>
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,6,0,0">
+                    <Button Content="Select All" Click="SelectAll_Click" Padding="10,6" Margin="0,0,6,0" />
+                    <Button Content="Clear Selection" Click="ClearSelection_Click" Padding="10,6" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Preview panel -->
+            <Border Grid.Column="1"
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                    BorderThickness="1" CornerRadius="4" Padding="8">
+                <StackPanel>
+                    <TextBlock Text="Preview" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,6" />
+                    <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                            BorderThickness="1"
+                            Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                            MinHeight="300">
+                        <Image x:Name="PreviewImage"
+                               MaxWidth="240" MaxHeight="380"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="4" />
+                    </Border>
+                    <TextBlock x:Name="PreviewInfoText"
+                               Text="Click a page to preview"
+                               FontSize="11"
+                               Foreground="Gray"
+                               HorizontalAlignment="Center"
+                               Margin="0,6,0,0"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Extract button -->
+        <Button Grid.Row="3"
+                Content="Extract Pages as Images"
+                Style="{StaticResource AccentButtonStyle}"
+                HorizontalAlignment="Left"
+                Padding="20,8"
+                FontSize="14"
+                Margin="0,10,0,0"
+                Click="Extract_Click" />
+    </Grid>
+</UserControl>
