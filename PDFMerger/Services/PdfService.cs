@@ -17,55 +17,52 @@ public static class PdfService
     /// </summary>
     public static void MergeFiles(IEnumerable<FileItem> files, string outputPath)
     {
-        using var writerStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
-        using var pdfWriter = new PdfWriter(writerStream);
-        using var pdfDoc = new PdfDocument(pdfWriter);
-        using var document = new Document(pdfDoc);
-
-        document.SetMargins(0, 0, 0, 0);
-
-        bool firstPage = true;
-
-        foreach (var file in files)
+        var tempFiles = new List<string>();
+        try
         {
-            if (file.IsPdf)
+            using var pdfWriter = new PdfWriter(outputPath);
+            using var pdfDoc = new PdfDocument(pdfWriter);
+            var merger = new PdfMerger(pdfDoc);
+
+            foreach (var file in files)
             {
-                using var srcStream = new FileStream(file.Path, FileMode.Open, FileAccess.Read);
-                using var srcPdf = new PdfDocument(new PdfReader(srcStream));
-
-                var merger = new PdfMerger(pdfDoc);
-                merger.Merge(srcPdf, 1, srcPdf.GetNumberOfPages());
+                if (file.IsPdf)
+                {
+                    using var srcPdf = new PdfDocument(new PdfReader(file.Path));
+                    merger.Merge(srcPdf, 1, srcPdf.GetNumberOfPages());
+                }
+                else if (file.IsImage)
+                {
+                    var temp = Path.GetTempFileName() + ".pdf";
+                    tempFiles.Add(temp);
+                    ConvertImageToPdf(file.Path, temp);
+                    using var srcPdf = new PdfDocument(new PdfReader(temp));
+                    merger.Merge(srcPdf, 1, srcPdf.GetNumberOfPages());
+                }
             }
-            else if (file.IsImage)
-            {
-                var imageData = ImageDataFactory.Create(file.Path);
-                var image = new Image(imageData);
-
-                float imgWidth = image.GetImageWidth();
-                float imgHeight = image.GetImageHeight();
-
-                // Scale down if too large (max A4 at 72dpi: 595x842 points)
-                float maxWidth = 595f;
-                float maxHeight = 842f;
-                float scaleX = imgWidth > maxWidth ? maxWidth / imgWidth : 1f;
-                float scaleY = imgHeight > maxHeight ? maxHeight / imgHeight : 1f;
-                float scale = Math.Min(scaleX, scaleY);
-
-                float pageWidth = imgWidth * scale;
-                float pageHeight = imgHeight * scale;
-
-                if (!firstPage)
-                    document.Add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-
-                pdfDoc.SetDefaultPageSize(new PageSize(pageWidth, pageHeight));
-
-                image.ScaleToFit(pageWidth, pageHeight);
-                image.SetFixedPosition(0, 0);
-                document.Add(image);
-            }
-
-            firstPage = false;
         }
+        finally
+        {
+            foreach (var t in tempFiles)
+                try { File.Delete(t); } catch { }
+        }
+    }
+
+    private static void ConvertImageToPdf(string imagePath, string outputPath)
+    {
+        var imageData = ImageDataFactory.Create(imagePath);
+        var image = new Image(imageData);
+        float w = image.GetImageWidth();
+        float h = image.GetImageHeight();
+        using var writer = new PdfWriter(outputPath);
+        using var pdfDoc = new PdfDocument(writer);
+        pdfDoc.SetDefaultPageSize(new PageSize(w, h));
+        using var doc = new Document(pdfDoc);
+        doc.SetMargins(0, 0, 0, 0);
+        image.SetFixedPosition(0, 0);
+        image.SetWidth(w);
+        image.SetHeight(h);
+        doc.Add(image);
     }
 
     /// <summary>
