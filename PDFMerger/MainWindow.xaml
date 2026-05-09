@@ -8,43 +8,42 @@
         ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
         Title="PDF &amp; Image Merger"
-        Width="1020" Height="720"
-        MinWidth="780" MinHeight="560">
+        Width="1060" Height="740"
+        MinWidth="800" MinHeight="580">
 
     <DockPanel>
-        <!-- Copyright footer -->
-        <TextBlock DockPanel.Dock="Bottom"
-                   Text="© 2026 Ricardo Scollo — PDF &amp; Image Merger v1.0.0  |  All rights reserved."
-                   FontSize="10"
-                   Foreground="Gray"
-                   HorizontalAlignment="Center"
-                   Margin="0,2,0,3" />
 
         <!-- Status bar -->
-        <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" Height="24">
+        <StatusBar DockPanel.Dock="Bottom" Height="28" Padding="4,0">
             <StatusBarItem>
-                <TextBlock x:Name="StatusText" Text="Ready" />
+                <TextBlock x:Name="StatusText" Text="Ready" FontSize="12" />
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock Text="© 2026 Ricardo Scollo  |  PDF &amp; Image Merger v1.0.0"
+                           FontSize="10"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
             </StatusBarItem>
         </StatusBar>
 
-        <!-- Main tab control -->
-        <TabControl x:Name="MainTabControl" Margin="8,8,8,4">
-            <TabItem Header="Merge">
+        <!-- Tab control -->
+        <TabControl x:Name="MainTabControl" Margin="8,8,8,4"
+                    ui:TabControlHelper.TabWidthMode="Equal">
+            <TabItem Header="  Merge  ">
                 <controls:MergeTab x:Name="MergeTabControl" />
             </TabItem>
-            <TabItem Header="Split">
+            <TabItem Header="  Split  ">
                 <controls:SplitTab x:Name="SplitTabControl" />
             </TabItem>
-            <TabItem Header="Extract">
+            <TabItem Header="  Extract  ">
                 <controls:ExtractTab x:Name="ExtractTabControl" />
             </TabItem>
-            <TabItem Header="Rotate">
+            <TabItem Header="  Rotate  ">
                 <controls:RotateTab x:Name="RotateTabControl" />
             </TabItem>
-            <TabItem Header="Compress">
+            <TabItem Header="  Compress  ">
                 <controls:CompressTab x:Name="CompressTabControl" />
             </TabItem>
-            <TabItem Header="Settings">
+            <TabItem Header="  Settings  ">
                 <controls:SettingsTab x:Name="SettingsTabControl" />
             </TabItem>
         </TabControl>

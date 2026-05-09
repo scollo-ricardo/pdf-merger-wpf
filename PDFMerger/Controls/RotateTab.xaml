@@ -3,118 +3,106 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.modernwpf.com/2019">
 
-    <Grid Margin="12">
+    <Grid Margin="16,14,16,14">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,8">
-            <TextBlock Text="Rotate Pages"
-                       FontSize="20" FontWeight="Bold" />
-            <TextBlock Text="Load a PDF, select pages, and apply rotation. The preview shows the rotated result."
-                       Foreground="Gray" FontSize="12" Margin="0,2,0,6" />
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Rotate Pages" Style="{StaticResource PageTitle}" />
+            <TextBlock Text="Load a PDF, select pages, apply rotation. The preview updates to show the result in real time."
+                       Style="{StaticResource PageSubtitle}" />
             <StackPanel Orientation="Horizontal">
-                <Button Content="Browse PDF…" Click="BrowsePdf_Click" Padding="10,6" Margin="0,0,8,0" />
-                <TextBlock x:Name="FileNameLabel"
-                           VerticalAlignment="Center"
+                <Button Content="Browse PDF…" Click="BrowsePdf_Click" Padding="12,6" Margin="0,0,10,0" />
+                <TextBlock x:Name="FileNameLabel" VerticalAlignment="Center"
                            Text="No file loaded"
-                           Foreground="Gray" />
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
             </StackPanel>
         </StackPanel>
 
         <!-- Body: page list + preview -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="260" />
+                <ColumnDefinition Width="270" />
             </Grid.ColumnDefinitions>
 
-            <!-- Page list + rotation controls -->
-            <Grid Grid.Column="0" Margin="0,0,8,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0"
-                           Text="Select pages to rotate:"
-                           Foreground="Gray" FontSize="11" Margin="0,0,0,4" />
-
-                <Border Grid.Row="1"
-                        BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                        BorderThickness="1" CornerRadius="4">
-                    <ListBox x:Name="PageListBox"
-                             SelectionMode="Extended"
-                             BorderThickness="0"
+            <!-- Page list -->
+            <Border Grid.Column="0" Style="{StaticResource CardBorder}"
+                    Margin="0,0,10,0">
+                <DockPanel Margin="12">
+                    <TextBlock DockPanel.Dock="Top" Text="PAGES"
+                               Style="{StaticResource SectionHeader}" />
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                                Margin="0,8,0,0">
+                        <Button Content="Select All" Click="SelectAll_Click"
+                                Padding="12,6" Margin="0,0,6,0" />
+                        <Button Content="Clear" Click="ClearSelection_Click"
+                                Padding="12,6" />
+                    </StackPanel>
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="Select one or more pages, then choose a rotation below"
+                               FontSize="11"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                               Margin="0,0,0,6" />
+                    <ListBox x:Name="PageListBox" SelectionMode="Extended"
+                             BorderThickness="0" Background="Transparent"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                             SelectionChanged="PageListBox_SelectionChanged" />
-                </Border>
+                             SelectionChanged="PageListBox_SelectionChanged">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource DefaultListBoxItemStyle}">
+                                <Setter Property="Padding" Value="10,6" />
+                                <Setter Property="Margin" Value="0,1" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </DockPanel>
+            </Border>
 
-                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,6,0,6">
-                    <Button Content="Select All" Click="SelectAll_Click" Padding="10,6" Margin="0,0,6,0" />
-                    <Button Content="Clear" Click="ClearSelection_Click" Padding="10,6" />
-                </StackPanel>
-
-                <StackPanel Grid.Row="3" Orientation="Horizontal">
-                    <Button Content="← 90° Left"
-                            Click="Rotate90Left_Click"
-                            Padding="10,6" Margin="0,0,6,0" />
-                    <Button Content="180°"
-                            Click="Rotate180_Click"
-                            Padding="10,6" Margin="0,0,6,0" />
-                    <Button Content="→ 90° Right"
-                            Click="Rotate90Right_Click"
-                            Padding="10,6" />
-                </StackPanel>
-            </Grid>
-
-            <!-- Preview panel -->
-            <Border Grid.Column="1"
-                    BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                    BorderThickness="1" CornerRadius="4" Padding="8">
-                <StackPanel>
-                    <TextBlock Text="Preview" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,6" />
-                    <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
-                            BorderThickness="1"
-                            Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                            MinHeight="300"
-                            ClipToBounds="True">
-                        <Image x:Name="PreviewImage"
-                               MaxWidth="240" MaxHeight="380"
-                               Stretch="Uniform"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Margin="4"
-                               RenderTransformOrigin="0.5,0.5">
+            <!-- Preview card -->
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}" Padding="12">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="PREVIEW"
+                               Style="{StaticResource SectionHeader}" />
+                    <TextBlock x:Name="PreviewInfoText" DockPanel.Dock="Bottom"
+                               Text="Click a page to preview"
+                               FontSize="11" HorizontalAlignment="Center"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                               TextWrapping="Wrap" Margin="0,8,0,0" />
+                    <Border Style="{StaticResource PreviewArea}" ClipToBounds="True">
+                        <Image x:Name="PreviewImage" Stretch="Uniform"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Margin="6" RenderTransformOrigin="0.5,0.5">
                             <Image.RenderTransform>
                                 <RotateTransform x:Name="PreviewRotateTransform" Angle="0" />
                             </Image.RenderTransform>
                         </Image>
                     </Border>
-                    <TextBlock x:Name="PreviewInfoText"
-                               Text="Click a page to preview"
-                               FontSize="11"
-                               Foreground="Gray"
-                               HorizontalAlignment="Center"
-                               Margin="0,6,0,0"
-                               TextWrapping="Wrap" />
-                </StackPanel>
+                </DockPanel>
             </Border>
         </Grid>
 
-        <!-- Save button -->
-        <Button Grid.Row="2"
-                Content="Save Rotated PDF"
+        <!-- Rotation buttons -->
+        <Border Grid.Row="2" Style="{StaticResource CardBorder}"
+                Padding="12,10" Margin="0,10,0,0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Rotate selected pages:"
+                           VerticalAlignment="Center" FontWeight="SemiBold"
+                           Margin="0,0,16,0" />
+                <Button Content="← 90° Left"  Click="Rotate90Left_Click"  Padding="14,6" Margin="0,0,6,0" />
+                <Button Content="180°"         Click="Rotate180_Click"     Padding="14,6" Margin="0,0,6,0" />
+                <Button Content="→ 90° Right"  Click="Rotate90Right_Click" Padding="14,6" />
+            </StackPanel>
+        </Border>
+
+        <!-- Primary action -->
+        <Button Grid.Row="3" Content="Save Rotated PDF"
                 Style="{StaticResource AccentButtonStyle}"
-                HorizontalAlignment="Left"
-                Padding="20,8"
-                FontSize="14"
-                Margin="0,10,0,0"
-                Click="SaveRotated_Click" />
+                HorizontalAlignment="Left" Padding="24,10" FontSize="14"
+                Margin="0,10,0,0" Click="SaveRotated_Click" />
     </Grid>
 </UserControl>

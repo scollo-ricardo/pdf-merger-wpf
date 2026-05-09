@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.modernwpf.com/2019">
 
-    <Grid Margin="12">
+    <Grid Margin="16,14,16,14">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -13,74 +13,103 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,8">
-            <TextBlock Text="Compress PDF"
-                       FontSize="20" FontWeight="Bold" />
-            <TextBlock Text="Load a PDF and choose a compression level to reduce file size."
-                       Foreground="Gray" FontSize="12" Margin="0,2,0,6" />
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Compress PDF" Style="{StaticResource PageTitle}" />
+            <TextBlock Text="Load a PDF and choose a compression level to reduce its file size."
+                       Style="{StaticResource PageSubtitle}" />
             <StackPanel Orientation="Horizontal">
-                <Button Content="Browse PDF…" Click="BrowsePdf_Click" Padding="10,6" Margin="0,0,8,0" />
-                <TextBlock x:Name="FileNameLabel"
-                           VerticalAlignment="Center"
+                <Button Content="Browse PDF…" Click="BrowsePdf_Click" Padding="12,6" Margin="0,0,10,0" />
+                <TextBlock x:Name="FileNameLabel" VerticalAlignment="Center"
                            Text="No file loaded"
-                           Foreground="Gray" />
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
             </StackPanel>
         </StackPanel>
 
-        <!-- Compression level selection -->
-        <GroupBox Grid.Row="1" Header="Compression Level" Margin="0,0,0,12" Padding="12,8">
-            <StackPanel>
-                <RadioButton x:Name="LowRadio"
-                             IsChecked="True"
-                             Margin="0,0,0,8">
-                    <StackPanel>
-                        <TextBlock Text="Low — Fastest" FontWeight="SemiBold" />
-                        <TextBlock Text="Minimal compression. Fastest processing, larger output file."
-                                   Foreground="Gray" FontSize="11" />
-                    </StackPanel>
-                </RadioButton>
+        <!-- Compression level cards -->
+        <StackPanel Grid.Row="1" Margin="0,14,0,0">
+            <TextBlock Text="COMPRESSION LEVEL" Style="{StaticResource SectionHeader}" />
 
-                <RadioButton x:Name="MediumRadio" Margin="0,0,0,8">
-                    <StackPanel>
-                        <TextBlock Text="Medium — Balanced" FontWeight="SemiBold" />
-                        <TextBlock Text="Good compression with smart mode. Balances size and speed."
-                                   Foreground="Gray" FontSize="11" />
-                    </StackPanel>
+            <!-- Low -->
+            <Border Style="{StaticResource CardBorder}" Padding="14,12" Margin="0,0,0,6">
+                <RadioButton x:Name="LowRadio" IsChecked="True" VerticalContentAlignment="Center">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Low  —  Fastest" FontWeight="SemiBold" FontSize="13" />
+                            <TextBlock Text="Minimal size reduction. Best for quick processing."
+                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       FontSize="11" Margin="0,2,0,0" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" Text="⚡" FontSize="18"
+                                   VerticalAlignment="Center" Margin="12,0,0,0" />
+                    </Grid>
                 </RadioButton>
+            </Border>
 
-                <RadioButton x:Name="HighRadio">
-                    <StackPanel>
-                        <TextBlock Text="High — Best Compression" FontWeight="SemiBold" />
-                        <TextBlock Text="Maximum compression with smart mode. Smallest output, slowest processing."
-                                   Foreground="Gray" FontSize="11" />
-                    </StackPanel>
+            <!-- Medium -->
+            <Border Style="{StaticResource CardBorder}" Padding="14,12" Margin="0,0,0,6">
+                <RadioButton x:Name="MediumRadio" VerticalContentAlignment="Center">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Medium  —  Balanced" FontWeight="SemiBold" FontSize="13" />
+                            <TextBlock Text="Good compression with smart mode. Recommended for most files."
+                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       FontSize="11" Margin="0,2,0,0" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" Text="⚖" FontSize="18"
+                                   VerticalAlignment="Center" Margin="12,0,0,0" />
+                    </Grid>
                 </RadioButton>
+            </Border>
+
+            <!-- High -->
+            <Border Style="{StaticResource CardBorder}" Padding="14,12">
+                <RadioButton x:Name="HighRadio" VerticalContentAlignment="Center">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="High  —  Best Compression" FontWeight="SemiBold" FontSize="13" />
+                            <TextBlock Text="Maximum compression. Smallest output, slowest processing."
+                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       FontSize="11" Margin="0,2,0,0" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" Text="🗜" FontSize="18"
+                                   VerticalAlignment="Center" Margin="12,0,0,0" />
+                    </Grid>
+                </RadioButton>
+            </Border>
+        </StackPanel>
+
+        <!-- Result card -->
+        <Border Grid.Row="2" x:Name="SizeResultBorder" Visibility="Collapsed"
+                Margin="0,12,0,0" Padding="14,10" CornerRadius="6"
+                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                BorderThickness="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="✔  " Foreground="#107C10" FontWeight="Bold" FontSize="14"
+                           VerticalAlignment="Center" />
+                <TextBlock x:Name="SizeLabel" FontSize="13" VerticalAlignment="Center"
+                           TextWrapping="Wrap" />
             </StackPanel>
-        </GroupBox>
-
-        <!-- Size comparison label -->
-        <Border Grid.Row="2"
-                x:Name="SizeResultBorder"
-                Visibility="Collapsed"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                BorderThickness="1" CornerRadius="4"
-                Padding="12,8" Margin="0,0,0,12"
-                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
-            <TextBlock x:Name="SizeLabel"
-                       FontSize="13"
-                       TextWrapping="Wrap" />
         </Border>
 
-        <!-- Spacer -->
         <Grid Grid.Row="3" />
 
-        <!-- Compress & Save button -->
-        <Button Grid.Row="4"
-                Content="Compress &amp; Save"
+        <!-- Primary action -->
+        <Button Grid.Row="4" Content="Compress &amp; Save"
                 Style="{StaticResource AccentButtonStyle}"
-                HorizontalAlignment="Left"
-                Padding="20,8"
-                FontSize="14"
+                HorizontalAlignment="Left" Padding="24,10" FontSize="14"
                 Click="CompressSave_Click" />
     </Grid>
 </UserControl>

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.modernwpf.com/2019">
 
-    <Grid Margin="12">
+    <Grid Margin="16,14,16,14">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -12,104 +12,131 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="PDF &amp; Image Merger"
-                       FontSize="20" FontWeight="Bold" />
-            <TextBlock Text="Drag &amp; drop files or use Add Files button to queue PDFs and images for merging."
-                       Foreground="Gray" FontSize="12" Margin="0,2,0,0" />
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="PDF &amp; Image Merger" Style="{StaticResource PageTitle}" />
+            <TextBlock Text="Drag &amp; drop files below or use Add Files. Reorder by dragging. Select a file to preview."
+                       Style="{StaticResource PageSubtitle}" />
         </StackPanel>
 
-        <!-- Body: file list + preview -->
+        <!-- Body: list + preview -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="270" />
             </Grid.ColumnDefinitions>
 
             <!-- File list -->
-            <Border Grid.Column="0" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                    BorderThickness="1" CornerRadius="4" Margin="0,0,8,0">
-                <ListBox x:Name="FileListBox"
-                         AllowDrop="True"
-                         SelectionMode="Extended"
-                         BorderThickness="0"
-                         Drop="FileListBox_Drop"
-                         DragEnter="FileListBox_DragEnter"
-                         DragOver="FileListBox_DragOver"
-                         SelectionChanged="FileListBox_SelectionChanged"
-                         MouseLeftButtonDown="FileListBox_MouseLeftButtonDown"
-                         MouseMove="FileListBox_MouseMove"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="Padding" Value="8,4" />
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
+            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,10,0">
+                <Grid>
+                    <!-- Empty state hint -->
+                    <StackPanel x:Name="DropHint" VerticalAlignment="Center"
+                                HorizontalAlignment="Center" IsHitTestVisible="False">
+                        <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets"
+                                   FontSize="42" HorizontalAlignment="Center"
+                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                                   Margin="0,0,0,10" />
+                        <TextBlock Text="Drop PDF or image files here"
+                                   FontSize="14" FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
+                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+                        <TextBlock Text="or use the Add Files button below"
+                                   FontSize="11" HorizontalAlignment="Center"
+                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                                   Margin="0,4,0,0" />
+                    </StackPanel>
+
+                    <ListBox x:Name="FileListBox"
+                             AllowDrop="True" SelectionMode="Extended"
+                             BorderThickness="0" Background="Transparent"
+                             Drop="FileListBox_Drop"
+                             DragEnter="FileListBox_DragEnter"
+                             DragOver="FileListBox_DragOver"
+                             SelectionChanged="FileListBox_SelectionChanged"
+                             MouseLeftButtonDown="FileListBox_MouseLeftButtonDown"
+                             MouseMove="FileListBox_MouseMove"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             Padding="4">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource DefaultListBoxItemStyle}">
+                                <Setter Property="Padding" Value="10,7" />
+                                <Setter Property="Margin" Value="0,1" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Border CornerRadius="3" Padding="5,2" Margin="0,0,10,0"
+                                            VerticalAlignment="Center">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="#0078D4" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsImage}" Value="True">
+                                                        <Setter Property="Background" Value="#107C10" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding Tag}" FontSize="10"
+                                                   FontWeight="Bold" Foreground="White" />
+                                    </Border>
+                                    <TextBlock Text="{Binding FileName}"
+                                               VerticalAlignment="Center" FontSize="13" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
             </Border>
 
-            <!-- Preview panel -->
-            <Border Grid.Column="1" Width="260"
-                    BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                    BorderThickness="1" CornerRadius="4" Padding="8">
-                <StackPanel VerticalAlignment="Top">
-                    <TextBlock Text="Preview" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,6" />
-
-                    <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
-                            BorderThickness="1" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                            MinHeight="300">
-                        <Image x:Name="PreviewImage"
-                               MaxWidth="230" MaxHeight="380"
-                               Stretch="Uniform"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Margin="4" />
-                    </Border>
-
-                    <TextBlock x:Name="PreviewInfoText"
-                               Text="No file selected"
-                               FontSize="11"
-                               Foreground="Gray"
-                               HorizontalAlignment="Center"
-                               Margin="0,6,0,6"
-                               TextWrapping="Wrap" />
-
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button x:Name="PrevPageBtn" Content="◀"
-                                Width="36" Margin="0,0,4,0"
-                                IsEnabled="False"
-                                Click="PrevPageBtn_Click" />
-                        <TextBlock x:Name="PageNavLabel"
-                                   VerticalAlignment="Center"
-                                   FontSize="11"
-                                   Margin="4,0"
-                                   Text="" />
-                        <Button x:Name="NextPageBtn" Content="▶"
-                                Width="36" Margin="4,0,0,0"
-                                IsEnabled="False"
-                                Click="NextPageBtn_Click" />
+            <!-- Preview card -->
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}" Padding="12">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="PREVIEW"
+                               Style="{StaticResource SectionHeader}" />
+                    <StackPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
+                        <TextBlock x:Name="PreviewInfoText"
+                                   Text="Select a file to preview"
+                                   FontSize="11" HorizontalAlignment="Center"
+                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,8" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button x:Name="PrevPageBtn" Content="◀" Width="34"
+                                    IsEnabled="False" Padding="0" Margin="0,0,8,0"
+                                    Click="PrevPageBtn_Click" />
+                            <TextBlock x:Name="PageNavLabel" VerticalAlignment="Center"
+                                       FontSize="11" MinWidth="50" TextAlignment="Center" />
+                            <Button x:Name="NextPageBtn" Content="▶" Width="34"
+                                    IsEnabled="False" Padding="0" Margin="8,0,0,0"
+                                    Click="NextPageBtn_Click" />
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
+                    <Border Style="{StaticResource PreviewArea}">
+                        <Image x:Name="PreviewImage" Stretch="Uniform"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Margin="6" />
+                    </Border>
+                </DockPanel>
             </Border>
         </Grid>
 
-        <!-- Toolbar buttons -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,8">
-            <Button Content="Add Files" Click="AddFiles_Click" Margin="0,0,6,0" Padding="10,6" />
-            <Button Content="Move Up" Click="MoveUp_Click" Margin="0,0,6,0" Padding="10,6" />
-            <Button Content="Move Down" Click="MoveDown_Click" Margin="0,0,6,0" Padding="10,6" />
-            <Button Content="Remove" Click="Remove_Click" Margin="0,0,6,0" Padding="10,6" />
-            <Button Content="Clear All" Click="ClearAll_Click" Padding="10,6" />
-        </StackPanel>
+        <!-- Toolbar -->
+        <WrapPanel Grid.Row="2" Margin="0,10,0,10">
+            <Button Content="Add Files"  Style="{StaticResource ToolbarButton}" Click="AddFiles_Click" />
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                       Margin="2,2,8,2" />
+            <Button Content="Move Up"   Style="{StaticResource ToolbarButton}" Click="MoveUp_Click" />
+            <Button Content="Move Down" Style="{StaticResource ToolbarButton}" Click="MoveDown_Click" />
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                       Margin="2,2,8,2" />
+            <Button Content="Remove"    Style="{StaticResource ToolbarButton}" Click="Remove_Click" />
+            <Button Content="Clear All" Style="{StaticResource ToolbarButton}" Click="ClearAll_Click" />
+        </WrapPanel>
 
-        <!-- Merge button -->
-        <Button Grid.Row="3"
-                Content="Merge Files"
+        <!-- Primary action -->
+        <Button Grid.Row="3" Content="Merge Files"
                 Style="{StaticResource AccentButtonStyle}"
-                HorizontalAlignment="Left"
-                Padding="20,8"
-                FontSize="14"
+                HorizontalAlignment="Left" Padding="24,10" FontSize="14"
                 Click="MergeFiles_Click" />
     </Grid>
 </UserControl>

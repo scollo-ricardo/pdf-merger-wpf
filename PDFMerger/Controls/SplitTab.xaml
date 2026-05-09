@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.modernwpf.com/2019">
 
-    <Grid Margin="12">
+    <Grid Margin="16,14,16,14">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -11,89 +11,80 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Header & file load row -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,8">
-            <TextBlock Text="Split PDF"
-                       FontSize="20" FontWeight="Bold" />
-            <TextBlock Text="Load a PDF and drag its pages into output columns to split."
-                       Foreground="Gray" FontSize="12" Margin="0,2,0,6" />
+        <!-- Header -->
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Split PDF" Style="{StaticResource PageTitle}" />
+            <TextBlock Text="Load a PDF, then drag pages from the source column into output columns to define each split."
+                       Style="{StaticResource PageSubtitle}" />
             <StackPanel Orientation="Horizontal">
-                <Button Content="Browse PDF…" Click="BrowsePdf_Click" Padding="10,6" Margin="0,0,8,0" />
-                <TextBlock x:Name="FileNameLabel"
-                           VerticalAlignment="Center"
+                <Button Content="Browse PDF…" Click="BrowsePdf_Click" Padding="12,6" Margin="0,0,10,0" />
+                <TextBlock x:Name="FileNameLabel" VerticalAlignment="Center"
                            Text="No file loaded"
-                           Foreground="Gray" />
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
             </StackPanel>
         </StackPanel>
 
-        <!-- Column count row -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8" VerticalAlignment="Center">
-            <TextBlock Text="Output columns:" VerticalAlignment="Center" Margin="0,0,8,0" />
-            <Button Content="−" Width="28" Click="DecrColumns_Click" Padding="0" Margin="0,0,4,0" />
-            <TextBlock x:Name="ColumnCountLabel"
-                       Text="2"
-                       Width="24"
-                       TextAlignment="Center"
-                       VerticalAlignment="Center"
-                       FontWeight="SemiBold" />
-            <Button Content="+" Width="28" Click="IncrColumns_Click" Padding="0" Margin="4,0,0,0" />
-        </StackPanel>
+        <!-- Column count -->
+        <Border Grid.Row="1" Style="{StaticResource CardBorder}"
+                Padding="12,8" Margin="0,10,0,0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="Output columns:" VerticalAlignment="Center"
+                           FontWeight="SemiBold" Margin="0,0,12,0" />
+                <Button Content="−" Width="32" Height="32" Padding="0"
+                        FontSize="16" Click="DecrColumns_Click" Margin="0,0,6,0" />
+                <TextBlock x:Name="ColumnCountLabel" Text="2"
+                           Width="28" TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="16" FontWeight="Bold" />
+                <Button Content="+" Width="32" Height="32" Padding="0"
+                        FontSize="16" Click="IncrColumns_Click" Margin="6,0,0,0" />
+                <TextBlock Text="  (drag pages from Source into each output column)"
+                           VerticalAlignment="Center" FontSize="11"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           Margin="16,0,0,0" />
+            </StackPanel>
+        </Border>
 
         <!-- Body: preview + columns -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="280" />
+                <ColumnDefinition Width="290" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- Preview panel -->
-            <Border Grid.Column="0"
-                    BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                    BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,8,0">
-                <StackPanel>
-                    <TextBlock Text="Preview" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,6" />
-                    <Border BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
-                            BorderThickness="1"
-                            Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                            MinHeight="300">
-                        <Image x:Name="PreviewImage"
-                               MaxWidth="256" MaxHeight="380"
-                               Stretch="Uniform"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Margin="4" />
-                    </Border>
-                    <TextBlock x:Name="PreviewInfoText"
+            <!-- Preview card -->
+            <Border Grid.Column="0" Style="{StaticResource CardBorder}"
+                    Padding="12" Margin="0,0,10,0">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="PREVIEW"
+                               Style="{StaticResource SectionHeader}" />
+                    <TextBlock x:Name="PreviewInfoText" DockPanel.Dock="Bottom"
                                Text="Click a page to preview"
-                               FontSize="11"
-                               Foreground="Gray"
-                               HorizontalAlignment="Center"
-                               Margin="0,6,0,0"
-                               TextWrapping="Wrap" />
-                </StackPanel>
+                               FontSize="11" HorizontalAlignment="Center"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                               TextWrapping="Wrap" Margin="0,8,0,0" />
+                    <Border Style="{StaticResource PreviewArea}">
+                        <Image x:Name="PreviewImage" Stretch="Uniform"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Margin="6" />
+                    </Border>
+                </DockPanel>
             </Border>
 
-            <!-- Columns panel -->
-            <Border Grid.Column="1"
-                    BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                    BorderThickness="1" CornerRadius="4">
+            <!-- Columns -->
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto"
                               VerticalScrollBarVisibility="Disabled">
-                    <StackPanel x:Name="ColumnsPanel"
-                                Orientation="Horizontal"
-                                Margin="4" />
+                    <StackPanel x:Name="ColumnsPanel" Orientation="Horizontal"
+                                Margin="8" />
                 </ScrollViewer>
             </Border>
         </Grid>
 
-        <!-- Split & Save -->
-        <Button Grid.Row="3"
-                Content="Split &amp; Save"
+        <!-- Primary action -->
+        <Button Grid.Row="3" Content="Split &amp; Save"
                 Style="{StaticResource AccentButtonStyle}"
-                HorizontalAlignment="Left"
-                Padding="20,8"
-                FontSize="14"
-                Margin="0,10,0,0"
-                Click="SplitSave_Click" />
+                HorizontalAlignment="Left" Padding="24,10" FontSize="14"
+                Margin="0,12,0,0" Click="SplitSave_Click" />
     </Grid>
 </UserControl>

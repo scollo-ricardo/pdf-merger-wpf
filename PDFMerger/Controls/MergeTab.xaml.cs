@@ -46,6 +46,7 @@ public partial class MergeTab : UserControl
             foreach (var path in dlg.FileNames)
                 _files.Add(new FileItem(path));
 
+            UpdateDropHint();
             StatusChanged?.Invoke(this, $"{_files.Count} file(s) in queue.");
         }
     }
@@ -98,6 +99,7 @@ public partial class MergeTab : UserControl
                 if (validExts.Contains(ext))
                     _files.Add(new FileItem(path));
             }
+            UpdateDropHint();
             StatusChanged?.Invoke(this, $"{_files.Count} file(s) in queue.");
         }
         e.Handled = true;
@@ -204,6 +206,9 @@ public partial class MergeTab : UserControl
             RemoveSelected();
     }
 
+    private void UpdateDropHint() =>
+        DropHint.Visibility = _files.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+
     private void RemoveSelected()
     {
         var selected = FileListBox.SelectedItems.Cast<FileItem>().ToList();
@@ -211,6 +216,7 @@ public partial class MergeTab : UserControl
             _files.Remove(item);
 
         if (_files.Count == 0) ClearPreview();
+        UpdateDropHint();
         StatusChanged?.Invoke(this, $"{_files.Count} file(s) in queue.");
     }
 
