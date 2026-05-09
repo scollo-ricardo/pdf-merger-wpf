@@ -347,8 +347,7 @@ public partial class MergeTab : UserControl
         catch (Exception ex)
         {
             StatusChanged?.Invoke(this, "Merge failed.");
-            var detail = ex.ToString();
-            MessageBox.Show($"Error merging files:\n\n{detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"Error merging files:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
