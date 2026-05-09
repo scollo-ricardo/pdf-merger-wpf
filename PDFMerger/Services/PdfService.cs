@@ -1,6 +1,5 @@
 using System.IO;
 using iText.Kernel.Pdf;
-using iText.Kernel.Utils;
 using iText.Kernel.Geom;
 using Path = System.IO.Path;
 using iText.Layout;
@@ -21,25 +20,23 @@ public static class PdfService
         var tempFiles = new List<string>();
         try
         {
-            using var pdfWriter = new PdfWriter(outputPath);
-            using var pdfDoc = new PdfDocument(pdfWriter);
-            var merger = new PdfMerger(pdfDoc);
+            using var writer = new PdfWriter(outputPath);
+            using var outputDoc = new PdfDocument(writer);
 
             foreach (var file in files)
             {
-                if (file.IsPdf)
+                string pdfPath = file.Path;
+
+                if (file.IsImage)
                 {
-                    using var srcPdf = new PdfDocument(new PdfReader(file.Path));
-                    merger.Merge(srcPdf, 1, srcPdf.GetNumberOfPages());
+                    pdfPath = Path.GetTempFileName() + ".pdf";
+                    tempFiles.Add(pdfPath);
+                    ConvertImageToPdf(file.Path, pdfPath);
                 }
-                else if (file.IsImage)
-                {
-                    var temp = Path.GetTempFileName() + ".pdf";
-                    tempFiles.Add(temp);
-                    ConvertImageToPdf(file.Path, temp);
-                    using var srcPdf = new PdfDocument(new PdfReader(temp));
-                    merger.Merge(srcPdf, 1, srcPdf.GetNumberOfPages());
-                }
+
+                using var reader = new PdfReader(pdfPath);
+                using var srcDoc = new PdfDocument(reader);
+                srcDoc.CopyPagesTo(1, srcDoc.GetNumberOfPages(), outputDoc);
             }
         }
         finally
