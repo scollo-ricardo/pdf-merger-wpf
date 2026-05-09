@@ -78,19 +78,13 @@ public static class PdfService
             var sanitizedName = SanitizeFileName(name);
             var outputPath = System.IO.Path.Combine(outputDir, $"{baseName}_{sanitizedName}.pdf");
 
-            using var outStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
-            using var outPdf = new PdfDocument(new PdfWriter(outStream));
+            using var outPdf = new PdfDocument(new PdfWriter(outputPath));
 
-            var merger = new PdfMerger(outPdf);
-
-            // Sort pages and merge them in order
             var sortedPages = pages.OrderBy(p => p).ToList();
             foreach (var pageNum in sortedPages)
             {
                 if (pageNum >= 1 && pageNum <= srcPdf.GetNumberOfPages())
-                {
-                    merger.Merge(srcPdf, pageNum, pageNum);
-                }
+                    srcPdf.CopyPagesTo(pageNum, pageNum, outPdf);
             }
         }
     }
