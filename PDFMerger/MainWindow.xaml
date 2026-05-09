@@ -26,8 +26,7 @@
         </StatusBar>
 
         <!-- Tab control -->
-        <TabControl x:Name="MainTabControl" Margin="8,8,8,4"
-                    ui:TabControlHelper.TabWidthMode="Equal">
+        <TabControl x:Name="MainTabControl" Margin="8,8,8,4">
             <TabItem Header="  Merge  ">
                 <controls:MergeTab x:Name="MergeTabControl" />
             </TabItem>
