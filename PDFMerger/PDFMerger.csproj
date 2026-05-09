@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Resource Include="Assets\icon.ico" />
+    <Resource Include="Assets\logo.png" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">

@@ -6,4 +6,5 @@ public class AppSettings
     public string DefaultOutputFolder { get; set; } = "";
     public string DefaultMergeFilename { get; set; } = "merged";
     public bool AutoOpenFolder { get; set; } = true;
+    public bool InstallPromptShown { get; set; } = false;
 }
