@@ -25,6 +25,21 @@
             </StatusBarItem>
         </StatusBar>
 
+        <!-- Update banner: collapsed by default, shown when a newer release exists -->
+        <Border x:Name="UpdateBanner" DockPanel.Dock="Top" Visibility="Collapsed"
+                Background="#0078D4" Padding="14,8" Cursor="Hand"
+                MouseLeftButtonUp="UpdateBanner_Click">
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Content="✕"
+                        Background="Transparent" BorderThickness="0" Foreground="White"
+                        FontSize="12" Padding="6,0" MinWidth="22"
+                        Click="DismissBanner_Click" />
+                <TextBlock x:Name="UpdateBannerText" Foreground="White" FontSize="13"
+                           VerticalAlignment="Center"
+                           Text="Update available — click to download" />
+            </DockPanel>
+        </Border>
+
         <!-- Tab control -->
         <TabControl x:Name="MainTabControl" Margin="8,8,8,4">
             <TabItem Header="  Merge  ">
