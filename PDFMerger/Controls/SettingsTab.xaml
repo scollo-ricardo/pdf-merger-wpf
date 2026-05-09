@@ -21,13 +21,13 @@
                                 MinWidth="120">
                             <RadioButton x:Name="LightThemeRadio" Content="☀  Light"
                                          IsChecked="True" Checked="ThemeRadio_Checked"
-                                         FontSize="13" />
+                                         GroupName="Theme" FontSize="13" />
                         </Border>
                         <Border Style="{StaticResource CardBorder}" Padding="14,10"
                                 MinWidth="120">
                             <RadioButton x:Name="DarkThemeRadio" Content="🌙  Dark"
                                          Checked="ThemeRadio_Checked"
-                                         FontSize="13" />
+                                         GroupName="Theme" FontSize="13" />
                         </Border>
                     </StackPanel>
                 </StackPanel>

@@ -31,7 +31,7 @@
 
             <!-- Low -->
             <Border Style="{StaticResource CardBorder}" Padding="14,12" Margin="0,0,0,6">
-                <RadioButton x:Name="LowRadio" IsChecked="True" VerticalContentAlignment="Center">
+                <RadioButton x:Name="LowRadio" IsChecked="True" GroupName="CompressionLevel" VerticalContentAlignment="Center">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -51,7 +51,7 @@
 
             <!-- Medium -->
             <Border Style="{StaticResource CardBorder}" Padding="14,12" Margin="0,0,0,6">
-                <RadioButton x:Name="MediumRadio" VerticalContentAlignment="Center">
+                <RadioButton x:Name="MediumRadio" GroupName="CompressionLevel" VerticalContentAlignment="Center">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -71,7 +71,7 @@
 
             <!-- High -->
             <Border Style="{StaticResource CardBorder}" Padding="14,12">
-                <RadioButton x:Name="HighRadio" VerticalContentAlignment="Center">
+                <RadioButton x:Name="HighRadio" GroupName="CompressionLevel" VerticalContentAlignment="Center">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
