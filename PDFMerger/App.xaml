@@ -12,7 +12,7 @@
 
             <!-- Card panel -->
             <Style x:Key="CardBorder" TargetType="Border">
-                <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" />
+                <Setter Property="BorderBrush" Value="#33000000" />
                 <Setter Property="BorderThickness" Value="1" />
                 <Setter Property="CornerRadius" Value="6" />
                 <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}" />
@@ -22,7 +22,7 @@
             <Style x:Key="SectionHeader" TargetType="TextBlock">
                 <Setter Property="FontSize" Value="11" />
                 <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+                <Setter Property="Foreground" Value="Gray" />
                 <Setter Property="Margin" Value="0,0,0,6" />
             </Style>
 
@@ -36,7 +36,7 @@
             <!-- Page subtitle -->
             <Style x:Key="PageSubtitle" TargetType="TextBlock">
                 <Setter Property="FontSize" Value="12" />
-                <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+                <Setter Property="Foreground" Value="Gray" />
                 <Setter Property="Margin" Value="0,0,0,12" />
                 <Setter Property="TextWrapping" Value="Wrap" />
             </Style>
@@ -51,7 +51,7 @@
             <!-- Preview image area -->
             <Style x:Key="PreviewArea" TargetType="Border">
                 <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" />
+                <Setter Property="BorderBrush" Value="#33000000" />
                 <Setter Property="BorderThickness" Value="1" />
                 <Setter Property="CornerRadius" Value="4" />
                 <Setter Property="MinHeight" Value="320" />
